@@ -6,4 +6,8 @@ RSpec.describe User, type: :model do
     it { is_expected.to validate_presence_of(:last_name) }
     it { is_expected.to validate_presence_of(:email) }
   end
+
+  context 'relations' do
+    it { is_expected.to have_many(:accounts).dependent(:destroy) }
+  end
 end
