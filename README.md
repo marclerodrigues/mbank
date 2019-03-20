@@ -85,6 +85,7 @@ We have three endpoints implemented in the system, documented below:
   `transfer[source_account_id]=[integer]`
   `transfer[destination_account_id]=[integer]`
   `transfer[amount]=[integer]`
+  `transfer[access_token]=[string]`
 
 * **Successful Response**
   * **Code:** 200 <br />
@@ -161,29 +162,3 @@ no modification are needed.
     2. If you are creating a new feature called User. branch -> feature/User
 
     3. If you are creating a new feature under a namescope, lets's say Admin::User. brach -> feature/admin/user
-
-
-# README
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
