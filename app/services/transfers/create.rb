@@ -1,6 +1,6 @@
 module Transfers
   class Create
-    attr_accessor :errors
+    delegate :errors, to: :transfer_validation
 
     def self.perform(options = {})
       new(options).perform
@@ -9,18 +9,16 @@ module Transfers
     def initialize(options = {})
       @params = options.fetch(:params)
       @amount = @params[:amount].to_i
-      @errors = []
     end
 
     def perform
       if valid?
         ActiveRecord::Base.transaction do
-          debit_from_source_account!
-          credit_destination_account!
-          create_transfer!
+          ::Accounts::Operations::Debit.perform!(account: source_account, amount: amount)
+          ::Accounts::Operations::Credit.perform!(account: destination_account, amount: amount)
+          ::Transfer.create!(transfer_params)
         end
       else
-        @errors = transfer_validation.errors
         false
       end
     end
@@ -31,18 +29,6 @@ module Transfers
 
     def valid?
       transfer_validation.perform
-    end
-
-    def debit_from_source_account!
-      source_account.update_attributes!(balance: source_account.balance - amount)
-    end
-
-    def credit_destination_account!
-      destination_account.update_attributes!(balance: destination_account.balance + amount)
-    end
-
-    def create_transfer!
-      Transfer.create!(transfer_params)
     end
 
     def source_account
