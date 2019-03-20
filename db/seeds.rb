@@ -5,3 +5,9 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+users = FactoryBot.create_list(:user, 5, access_token: 'access-token')
+
+users.each do |user|
+  FactoryBot.create(:account, user: user, balance: 1000)
+end
+
